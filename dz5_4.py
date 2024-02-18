@@ -9,6 +9,7 @@ def input_error(func):
             return func(*args, **kwargs)
         except ValueError:
             return "Give me name and phone please."
+       
     return inner
 
 @input_error
@@ -18,8 +19,10 @@ def add_contact(args):
             phone = f"+38{phone}"
     elif len(phone) == 11:
         phone = f"+3{phone}"
-    elif len(match) == 12:
+    elif len(phone) == 12:
         phone = f"+{phone}"
+    elif len(phone) < 10:
+        return("enter phone number")
     else:
         phone = phone
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
@@ -47,6 +50,8 @@ def change_contact(args):
         phone = f"+3{phone}"
     elif len(phone) == 12:
         phone = f"+{phone}"
+    elif len(phone) < 10:
+        return("enter phone number")
     else:
         phone = phone
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
@@ -73,18 +78,8 @@ def show_phone(args):
     lists = {}
     for line in lines:
         list_line = line.split(",")
-        pattern = r"[\s\D]"
-        repl = r""
-        match = re.sub(pattern, repl, list_line[1])
-        if len(match) == 10:
-            match = f"+38{match}"
-        elif len(match) == 11:
-            match = f"+3{match}"
-        elif len(match) == 12:
-            match = f"+{match}"
-        else:
-            match = match
-        lists.update({list_line[0]: match.strip()})
+        match = re.sub(pattern = r"[\s\D]", repl = r"", string = list_line[1])
+        lists.update({list_line[0]: f"+{match.strip()}"})
     if name in lists:
         return(f"{name},{lists[name]}")
     else:
@@ -101,16 +96,11 @@ def show_all():
         pattern = r"[\s\D]"
         repl = r""
         match = re.sub(pattern, repl, list_line[1])
-        if len(match) == 10:
-            match = f"+38{match}"
-        elif len(match) == 11:
-            match = f"+3{match}"
-        elif len(match) == 12:
-            match = f"+{match}"
-        else:
-            match = match
-        lists.update({list_line[0]: match.strip()})
+        match = re.sub(pattern = r"[\s\D]", repl = r"", string = list_line[1])
+        lists.update({list_line[0]: f"+{match.strip()}"})
     return lists
+
+
 
 def main():
     contacts = {}

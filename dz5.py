@@ -37,3 +37,5 @@ text = "Загальний дохід працівника складаєтьс�
 total_income = sum_profit(text, generator_numbers) # Виклик функції sum_profit з результатом generator_numbers
 print(f"Загальний дохід: {total_income}")
 
+
+
