@@ -16,7 +16,7 @@ def input_error(func):
 def add_contact(args):
     name, phone = args
     if len(phone) == 10:
-            phone = f"+38{phone}"
+        phone = f"+38{phone}"
     elif len(phone) == 11:
         phone = f"+3{phone}"
     elif len(phone) == 12:
