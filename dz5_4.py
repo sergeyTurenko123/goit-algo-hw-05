@@ -91,7 +91,7 @@ def show_phone(args):
         return("Contact does not exist. Will you write it down?")
     
 import re
-@input_error
+
 def show_all():
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
         lines = fh.readlines()
