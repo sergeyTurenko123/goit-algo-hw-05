@@ -8,9 +8,9 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            return "Give me name and phone please."
-       
+            return "Give me name and phone please."  
     return inner
+
 
 def normalize_phone(args):
     name, phone = args
@@ -20,15 +20,15 @@ def normalize_phone(args):
         phone = f"+3{phone}"
     elif len(phone) == 12:
         normalize_phone = f"+{phone}"
-    elif len(phone) < 10:
+    elif len(phone) < 10 or len(phone) > 12:
         return("enter phone number")
     else:
         normalize_phone = phone
     return(normalize_phone)
+    
+    
 
-
-
-# @input_error
+@input_error
 def add_contact(args):
     name, normalize = args
     normalize = normalize_phone(args)
@@ -48,7 +48,7 @@ def add_contact(args):
                 fh.write(f'{key},{value}\n')
         return "Contact added."
 
-# @input_error
+@input_error
 def change_contact(args):
     name, normalize = args
     normalize = normalize_phone(args)
@@ -68,7 +68,7 @@ def change_contact(args):
     else:
         print("Contact does not exist. Will you write it down?")
     
-# @input_error
+@input_error
 def show_phone(args):
     [name] = args
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
