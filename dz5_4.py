@@ -12,19 +12,26 @@ def input_error(func):
        
     return inner
 
-@input_error
-def add_contact(args):
+def normalize_phone(args):
     name, phone = args
     if len(phone) == 10:
-        phone = f"+38{phone}"
+        normalize_phone = f"+38{phone}"
     elif len(phone) == 11:
         phone = f"+3{phone}"
     elif len(phone) == 12:
-        phone = f"+{phone}"
+        normalize_phone = f"+{phone}"
     elif len(phone) < 10:
         return("enter phone number")
     else:
-        phone = phone
+        normalize_phone = phone
+    return(normalize_phone)
+
+
+
+# @input_error
+def add_contact(args):
+    name, normalize = args
+    normalize = normalize_phone(args)
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
         lines = fh.readlines()
     lists = {}
@@ -35,25 +42,16 @@ def add_contact(args):
     if name in lists:
         return("Contact exists. Re-record?")
     else:
-        lists[name] = phone
+        lists[name] = normalize
         with open("name_phone.txt","w", encoding = "utf-8") as fh:
             for key, value in lists.items():
                 fh.write(f'{key},{value}\n')
         return "Contact added."
 
-@input_error
+# @input_error
 def change_contact(args):
-    name, phone = args
-    if len(phone) == 10:
-        phone = f"+38{phone}"
-    elif len(phone) == 11:
-        phone = f"+3{phone}"
-    elif len(phone) == 12:
-        phone = f"+{phone}"
-    elif len(phone) < 10:
-        return("enter phone number")
-    else:
-        phone = phone
+    name, normalize = args
+    normalize = normalize_phone(args)
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
         lines = fh.readlines()
     lists = {}
@@ -62,7 +60,7 @@ def change_contact(args):
         match = re.sub(pattern = r"[\s\D]", repl = r"", string = list_line[1])
         lists.update({list_line[0]: f"+{match.strip()}"})
     if name in lists:
-        lists[name] = phone
+        lists[name] =  normalize
         with open("name_phone.txt","w", encoding = "utf-8") as fh:
             for key, value in lists.items():
                 fh.write(f'{key},{value}\n')
@@ -70,7 +68,7 @@ def change_contact(args):
     else:
         print("Contact does not exist. Will you write it down?")
     
-@input_error
+# @input_error
 def show_phone(args):
     [name] = args
     with open('name_phone.txt', "r", encoding = "utf-8") as fh:
